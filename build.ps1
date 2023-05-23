@@ -15,7 +15,8 @@ if (Test-Path ".\dist") {
     Remove-Item ".\dist" -Force -Recurse
 }
 
-Copy-Item -Recurse .\target\release .\dist\
+New-Item -Path .\dist -ItemType Directory
+gci -File .\target\release | Copy-Item -Destination .\dist\
 Copy-Item -Recurse .\appx\* .\dist\
 Invoke-Call -ScriptBlock { MakeAppx pack /d dist /p dist\wireguard } -ErrorAction Stop
 Write-Host "Make sure the publisher fields in .\appx\AppxManifest.xml match the fields in your certificate. For more details see https://learn.microsoft.com/en-us/uwp/schemas/appxpackage/appxmanifestschema/element-identity"
